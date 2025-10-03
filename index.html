@@ -1,367 +1,190 @@
-
-
-
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Orquesta Sinfónica | Agenda de Conciertos y Música Clásica</title>
-    
-    <meta name="description" content="La mejor orquesta sinfónica de [Tu Ciudad/Región]. Consulta nuestra agenda de conciertos, explora nuestra galería de imágenes y escucha el repertorio clásico más destacado.">
-    
-    <meta name="keywords" content="orquesta sinfónica, música clásica, conciertos, [Tu Ciudad], agenda cultural, músicos, director de orquesta">
-    
-    <meta name="robots" content="index, follow">
-    
-    <meta name="author" content="[Nombre del Propietario o Desarrollador]">
-
-    <link rel="canonical" href="https://www.tuorquesta.com/"> 
-    
-    <meta property="og:title" content="Mi Orquesta Sinfónica | Música y Eventos">
-    <meta property="og:description" content="Descubre nuestra agenda de conciertos, galería de fotos y escucha nuestras mejores piezas clásicas. ¡Síguenos!">
-    
-    <meta property="og:image" content="https://www.tuorquesta.com/imagenes/logotipo_1200x630.png"> 
-    
-    <meta property="og:url" content="https://www.tuorquesta.com"> 
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+    <title>Reproductor Multimedia y WhatsApp</title>
     <style>
-        :root {
-            --menu-height: 60px;
-            --social-icon-size: 45px; /* Tamaño de los iconos sociales */
-            --social-spacing: 10px; /* Espacio entre iconos */
-            --social-bottom-margin: 75px; /* Margen desde abajo para los iconos */
-            --social-right-margin: 15px; /* Margen desde la derecha para los iconos */
-        }
-
-        /* ----------------------------------- */
-        /* ESTILOS DEL MARCO DEL IPHONE (MOCKUP) */
-        /* ----------------------------------- */
+        /* Estilos generales */
         body {
+            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-color: #2c3e50;
+            height: 100vh;
             margin: 0;
-            padding: 20px;
+            flex-direction: column; /* Para centrar los elementos en la columna */
         }
 
-        .iphone-frame {
+        /* Contenedor del reproductor */
+        .video-container {
             position: relative;
-            width: 375px; 
-            height: 812px;
-            background-color: #000;
-            border-radius: 40px;
-            box-shadow: 0 0 0 10px #333, 0 0 0 12px #ccc, 0 0 50px rgba(0, 0, 0, 0.5);
-            overflow: hidden; 
-            z-index: 50; 
-        }
-        
-        .iphone-frame::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 25px;
-            background: #000;
-            border-radius: 0 0 20px 20px;
-            z-index: 1001;
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 20px; /* Separación del botón flotante */
         }
 
-        /* ----------------------------------- */
-        /* ESTILOS DE LA PÁGINA WEB REAL (PANTALLA) */
-        /* ----------------------------------- */
-        .pagina-contenido {
+        .video-main {
             width: 100%;
-            height: 100%;
-            overflow-y: scroll;
-            background-color: #E6E6FA; /* VIOLETA CLARITO (Fondo General) */
-            padding-top: var(--menu-height); 
-            box-sizing: border-box;
         }
 
-        /* --- Estilos del Menú (Header) --- */
-        .menu-estatico {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #ADD8E6; /* AZUL CLARITO */
-            color: #333;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            height: var(--menu-height); 
-        }
-
-        .menu-estatico nav {
+        /* Controles del reproductor */
+        .controls {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border-radius: 0 0 8px 8px;
         }
 
-        .logo {
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        .opciones-menu {
-            list-style: none;
-            display: flex;
-            margin: 0;
-            padding: 0;
-        }
-
-        .opciones-menu li {
-            margin-left: 10px;
-        }
-
-        .opciones-menu a, .opciones-menu button {
-            color: #333;
-            text-decoration: none;
+        .control-btn {
             background: none;
             border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: background-color 0.3s;
-            border-radius: 4px;
-            white-space: nowrap;
-        }
-
-        .opciones-menu button:hover, .opciones-menu a:hover {
-            background-color: #B0E0E6;
-        }
-
-        /* ----------------------------------- */
-        /* ESTILOS DE SECCIONES CON COLORES ESPECÍFICOS */
-        /* ----------------------------------- */
-        
-        main section {
-            padding: 20px;
-            margin: 0;
-            padding-top: 20px; 
-        }
-        
-        #inicio {
-            background-color: #FFFFE0; /* Amarillo Clarito */
-        }
-        
-        #galeria-musica {
-            background-color: #FFCCCC; /* Rojito Clarito */
-            animation: destello-sutil 2s infinite alternate; 
-            display: none;
-        }
-        
-        @keyframes destello-sutil {
-            0% { 
-                background-color: #FFCCCC; 
-                box-shadow: 0 0 5px rgba(255, 100, 100, 0.5);
-            }
-            100% { 
-                background-color: #FFF0F0;
-                box-shadow: 0 0 15px rgba(255, 50, 50, 0.8);
-            }
-        }
-        
-        #galeria-imagenes {
-            background-color: #CCCCCC; /* Gris */
-            display: none;
-        }
-        
-        .oculta {
-            display: none !important; 
-        }
-
-        /* Estilos de Contenido Interno */
-        .item-galeria {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .item-galeria-img {
-            display: block;
-            margin: 10px 0;
-            width: 100%;
-        }
-        .item-galeria-img img {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        
-        audio, iframe {
-            width: 100%;
-            display: block;
-        }
-
-        /* ----------------------------------- */
-        /* Iconos de Redes Sociales Flotantes */
-        /* ----------------------------------- */
-        .redes-sociales-flotantes {
-            position: fixed;
-            bottom: var(--social-bottom-margin);
-            right: var(--social-right-margin);
-            display: flex; /* Para que los iconos se alineen horizontalmente */
-            flex-direction: column; /* Cambia a columna para apilar verticalmente */
-            gap: var(--social-spacing); /* Espacio entre los iconos */
-            z-index: 1000;
-        }
-
-        .redes-sociales-flotantes a {
             color: white;
-            width: var(--social-icon-size);
-            height: var(--social-icon-size);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .progress-bar {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #555;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+
+        .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #e74c3c;
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: calc(var(--social-icon-size) * 0.5); /* Tamaño del icono dentro del círculo */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s;
-            text-decoration: none; /* Quitar el subrayado */
         }
 
-        .redes-sociales-flotantes a:hover {
-            transform: scale(1.1);
-        }
-        
-        /* Colores específicos para cada red social */
-        .redes-sociales-flotantes .whatsapp {
-            background-color: #25D366; 
-        }
-        .redes-sociales-flotantes .facebook {
-            background-color: #1877F2; 
-        }
-        .redes-sociales-flotantes .instagram {
-            background-color: #C13584; /* O un gradiente: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); */
+        .volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 80px;
+            height: 8px;
+            background: #555;
+            cursor: pointer;
         }
 
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #e74c3c;
+            border-radius: 50%;
+        }
+
+        /* Estilo del botón flotante de WhatsApp */
+        .whatsapp-flotante {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+        }
+
+        .whatsapp-flotante img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
 
-    <div class="iphone-frame">
+    <div class="video-container">
+        <video id="video-player" class="video-main">
+            <!-- Reemplaza "tu-video.mp4" con la ruta de tu video -->
+            <source src="tu-video.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+        </video>
 
-        <div class="pagina-contenido">
-            
-            <header class="menu-estatico">
-                <nav>
-                    <div class="logo">Mi Orquesta</div>
-                    <ul class="opciones-menu">
-                        <li><a href="#inicio">Inicio</a></li>
-                        <li><button id="btn-musica">Música</button></li>
-                        <li><button id="btn-imagenes">Imágenes</button></li>
-                    </ul>
-                </nav>
-            </header>
-
-            <main>
-                <section id="inicio">
-                    <h2>Bienvenido a la Página Oficial de Nuestra Orquesta 🎶</h2>
-                    <p>¡Explora nuestra música y fotos con estilo!</p>
-                </section>
-
-                <section id="galeria-musica" class="galeria oculta">
-                    <h3>Nuestra Música que Destella</h3>
-                    <div class="item-galeria">
-                        <h4>Ejemplo de Audio Local</h4>
-                        <audio controls src="ruta/a/tu/audio.mp3">Tu navegador no soporta el elemento de audio.</audio>
-                    </div>
-                    <div class="item-galeria">
-                        <h4>Audio Incrustado (SoundCloud/YouTube)</h4>
-                        <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/EJEMPLO&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
-                    </div>
-                </section>
-
-                <section id="galeria-imagenes" class="galeria oculta">
-                    <h3>Momentos Especiales (Gris)</h3>
-                    <div class="item-galeria-img">
-                        <img src="https://via.placeholder.com/400x300?text=Foto+1" alt="Ensayo de la Orquesta">
-                    </div>
-                    <div class="item-galeria-img">
-                        <img src="https://via.placeholder.com/400x300?text=Foto+2" alt="Concierto en vivo">
-                    </div>
-                    <div class="item-galeria-img">
-                        <img src="https://via.placeholder.com/400x300?text=Foto+3" alt="Director de orquesta">
-                    </div>
-                </section>
-            </main>
-
-            <div class="redes-sociales-flotantes">
-                <a href="https://wa.me/573001234567" target="_blank" class="whatsapp">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a href="https://www.facebook.com/TuPaginaDeFacebook" target="_blank" class="facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://www.instagram.com/TuCuentaDeInstagram" target="_blank" class="instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-            </div>
-
+        <div class="controls">
+            <button id="play-pause-btn" class="control-btn">►</button>
+            <input type="range" id="progress-bar" value="0" min="0" max="100" class="progress-bar">
+            <button id="mute-btn" class="control-btn">🔊</button>
+            <input type="range" id="volume-slider" value="100" min="0" max="100" class="volume-slider">
         </div>
     </div>
-    
+
+    <a href="https://api.whatsapp.com/send?phone=TU_NUMERO_DE_TELEFONO" class="whatsapp-flotante" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="Icono de WhatsApp">
+    </a>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const btnMusica = document.getElementById('btn-musica');
-            const btnImagenes = document.getElementById('btn-imagenes');
-            const galeriaMusica = document.getElementById('galeria-musica');
-            const galeriaImagenes = document.getElementById('galeria-imagenes');
-            const paginaContenido = document.querySelector('.pagina-contenido');
-            const menuHeight = 60; // Altura fija del menú
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('video-player');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const muteBtn = document.getElementById('mute-btn');
+            const volumeSlider = document.getElementById('volume-slider');
 
-            // Función para ocultar todas las galerías
-            function ocultarTodasLasGalerias() {
-                galeriaMusica.classList.add('oculta');
-                galeriaImagenes.classList.add('oculta');
-            }
-
-            // Función para hacer scroll justo debajo del menú fijo
-            function scrollToSection(section) {
-                const scrollPosition = section.offsetTop - menuHeight;
-                paginaContenido.scrollTo({
-                    top: scrollPosition,
-                    behavior: 'smooth'
-                });
-            }
-
-            // Evento para el botón de Música
-            btnMusica.addEventListener('click', function() {
-                ocultarTodasLasGalerias();
-                galeriaMusica.classList.remove('oculta');
-                scrollToSection(galeriaMusica);
+            // Control de reproducción/pausa
+            playPauseBtn.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play();
+                    playPauseBtn.innerHTML = '❚❚'; // Icono de pausa
+                } else {
+                    video.pause();
+                    playPauseBtn.innerHTML = '►'; // Icono de reproducción
+                }
             });
 
-            // Evento para el botón de Imágenes
-            btnImagenes.addEventListener('click', function() {
-                ocultarTodasLasGalerias();
-                galeriaImagenes.classList.remove('oculta');
-                scrollToSection(galeriaImagenes);
+            // Actualizar la barra de progreso
+            video.addEventListener('timeupdate', () => {
+                const value = (video.currentTime / video.duration) * 100;
+                progressBar.value = value;
             });
-            
-             // Evento para el botón de Inicio
-            document.querySelector('.opciones-menu a[href="#inicio"]').addEventListener('click', function(e) {
-                e.preventDefault();
-                ocultarTodasLasGalerias();
-                paginaContenido.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+
+            // Controlar el avance con la barra de progreso
+            progressBar.addEventListener('input', () => {
+                const time = (progressBar.value / 100) * video.duration;
+                video.currentTime = time;
             });
+
+            // Control de volumen
+            volumeSlider.addEventListener('input', () => {
+                video.volume = volumeSlider.value / 100;
+                if (video.volume === 0) {
+                    muteBtn.innerHTML = '🔇'; // Icono de silencio
+                } else {
+                    muteBtn.innerHTML = '🔊'; // Icono de sonido
+                }
+            });
+
+            // Silenciar
+            muteBtn.addEventListener('click', () => {
+                video.muted = !video.muted;
+                if (video.muted) {
+                    muteBtn.innerHTML = '🔇'; // Icono de silencio
+                    volumeSlider.value = 0;
+                } else {
+                    muteBtn.innerHTML = '🔊'; // Icono de sonido
+                    volumeSlider.value = video.volume * 100;
+                }
+            });
+
+            // Para que los controles nativos no se muestren
+            video.removeAttribute('controls');
         });
     </script>
+
 </body>
 </html>
