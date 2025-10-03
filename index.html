@@ -3,35 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproductor Multimedia y WhatsApp</title>
+    <title>Menú con Anclajes, Reproductor y WhatsApp</title>
     <style>
-        /* Estilos generales */
+        /* Estilos generales y fondo de la página */
         body {
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #ADD8E6; /* Azul claro */
+            font-family: Arial, sans-serif;
             margin: 0;
-            flex-direction: column; /* Para centrar los elementos en la columna */
+            padding: 0;
+        }
+
+        /* Estilos del menú lateral */
+        .menu-vertical {
+            width: 200px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+
+        .menu-vertical ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-vertical a {
+            display: block;
+            color: white;
+            padding: 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .menu-vertical a:hover {
+            background-color: #575757;
+        }
+
+        /* Estilos del contenido principal */
+        .contenido-principal {
+            margin-left: 220px; /* Separación para el menú lateral */
+            padding: 20px;
+        }
+
+        /* Estilos de las secciones de anclaje */
+        .seccion {
+            padding: 60px 20px;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         /* Contenedor del reproductor */
         .video-container {
-            position: relative;
-            width: 80%;
-            max-width: 800px;
-            margin-bottom: 20px; /* Separación del botón flotante */
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
         }
 
         .video-main {
             width: 100%;
         }
 
-        /* Controles del reproductor */
+        /* Controles del reproductor multimedia */
         .controls {
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 10px;
             background-color: #333;
             color: white;
@@ -83,8 +126,8 @@
             background: #e74c3c;
             border-radius: 50%;
         }
-
-        /* Estilo del botón flotante de WhatsApp */
+        
+        /* Botón flotante de WhatsApp */
         .whatsapp-flotante {
             position: fixed;
             width: 60px;
@@ -109,25 +152,57 @@
 </head>
 <body>
 
-    <div class="video-container">
-        <video id="video-player" class="video-main">
-            <!-- Reemplaza "tu-video.mp4" con la ruta de tu video -->
-            <source src="tu-video.mp4" type="video/mp4">
-            Tu navegador no soporta el elemento de video.
-        </video>
-
-        <div class="controls">
-            <button id="play-pause-btn" class="control-btn">►</button>
-            <input type="range" id="progress-bar" value="0" min="0" max="100" class="progress-bar">
-            <button id="mute-btn" class="control-btn">🔊</button>
-            <input type="range" id="volume-slider" value="100" min="0" max="100" class="volume-slider">
-        </div>
+    <!-- Menú de navegación vertical -->
+    <div class="menu-vertical">
+        <ul>
+            <li><a href="#vision">Visión</a></li>
+            <li><a href="#mision">Misión</a></li>
+            <li><a href="#reproductor">Reproductor</a></li>
+        </ul>
     </div>
 
+    <!-- Contenido principal de la página -->
+    <div class="contenido-principal">
+        <h1 style="text-align: center;">Título de mi página</h1>
+        
+        <!-- Sección de Visión -->
+        <section id="vision" class="seccion">
+            <h2>Visión</h2>
+            <p>Aquí va el texto sobre la visión de la empresa, proyecto u organización.</p>
+        </section>
+        
+        <!-- Sección de Misión -->
+        <section id="mision" class="seccion">
+            <h2>Misión</h2>
+            <p>Aquí va el texto sobre la misión de la empresa, proyecto u organización.</p>
+        </section>
+        
+        <!-- Sección del Reproductor -->
+        <section id="reproductor" class="seccion">
+            <h2>Reproductor Multimedia</h2>
+            <div class="video-container">
+                <video id="video-player" class="video-main">
+                    <!-- Reemplaza "tu-video.mp4" con la ruta de tu video -->
+                    <source src="tu-video.mp4" type="video/mp4">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+
+                <div class="controls">
+                    <button id="play-pause-btn" class="control-btn">►</button>
+                    <input type="range" id="progress-bar" value="0" min="0" max="100" class="progress-bar">
+                    <button id="mute-btn" class="control-btn">🔊</button>
+                    <input type="range" id="volume-slider" value="100" min="0" max="100" class="volume-slider">
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Icono flotante de WhatsApp -->
     <a href="https://api.whatsapp.com/send?phone=TU_NUMERO_DE_TELEFONO" class="whatsapp-flotante" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="Icono de WhatsApp">
     </a>
 
+    <!-- Script JavaScript para el reproductor -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('video-player');
@@ -136,55 +211,50 @@
             const muteBtn = document.getElementById('mute-btn');
             const volumeSlider = document.getElementById('volume-slider');
 
-            // Control de reproducción/pausa
             playPauseBtn.addEventListener('click', () => {
                 if (video.paused) {
                     video.play();
-                    playPauseBtn.innerHTML = '❚❚'; // Icono de pausa
+                    playPauseBtn.innerHTML = '❚❚';
                 } else {
                     video.pause();
-                    playPauseBtn.innerHTML = '►'; // Icono de reproducción
+                    playPauseBtn.innerHTML = '►';
                 }
             });
 
-            // Actualizar la barra de progreso
             video.addEventListener('timeupdate', () => {
                 const value = (video.currentTime / video.duration) * 100;
                 progressBar.value = value;
             });
 
-            // Controlar el avance con la barra de progreso
             progressBar.addEventListener('input', () => {
                 const time = (progressBar.value / 100) * video.duration;
                 video.currentTime = time;
             });
 
-            // Control de volumen
             volumeSlider.addEventListener('input', () => {
                 video.volume = volumeSlider.value / 100;
                 if (video.volume === 0) {
-                    muteBtn.innerHTML = '🔇'; // Icono de silencio
+                    muteBtn.innerHTML = '🔇';
                 } else {
-                    muteBtn.innerHTML = '🔊'; // Icono de sonido
+                    muteBtn.innerHTML = '🔊';
                 }
             });
 
-            // Silenciar
             muteBtn.addEventListener('click', () => {
                 video.muted = !video.muted;
                 if (video.muted) {
-                    muteBtn.innerHTML = '🔇'; // Icono de silencio
+                    muteBtn.innerHTML = '🔇';
                     volumeSlider.value = 0;
                 } else {
-                    muteBtn.innerHTML = '🔊'; // Icono de sonido
+                    muteBtn.innerHTML = '🔊';
                     volumeSlider.value = video.volume * 100;
                 }
             });
 
-            // Para que los controles nativos no se muestren
             video.removeAttribute('controls');
         });
     </script>
 
 </body>
 </html>
+
