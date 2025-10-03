@@ -1,19 +1,41 @@
 
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orquesta - Colores y Animación</title>
+    <title>Mi Orquesta Sinfónica | Agenda de Conciertos y Música Clásica</title>
+    
+    <meta name="description" content="La mejor orquesta sinfónica de [Tu Ciudad/Región]. Consulta nuestra agenda de conciertos, explora nuestra galería de imágenes y escucha el repertorio clásico más destacado.">
+    
+    <meta name="keywords" content="orquesta sinfónica, música clásica, conciertos, [Tu Ciudad], agenda cultural, músicos, director de orquesta">
+    
+    <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="[Nombre del Propietario o Desarrollador]">
+
+    <link rel="canonical" href="https://www.tuorquesta.com/"> 
+    
+    <meta property="og:title" content="Mi Orquesta Sinfónica | Música y Eventos">
+    <meta property="og:description" content="Descubre nuestra agenda de conciertos, galería de fotos y escucha nuestras mejores piezas clásicas. ¡Síguenos!">
+    
+    <meta property="og:image" content="https://www.tuorquesta.com/imagenes/logotipo_1200x630.png"> 
+    
+    <meta property="og:url" content="https://www.tuorquesta.com"> 
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        /* La altura del menú fijo es de aproximadamente 60px.
-           Ajustamos el padding-top para que el contenido empiece debajo del menú. */
         :root {
             --menu-height: 60px;
+            --social-icon-size: 45px; /* Tamaño de los iconos sociales */
+            --social-spacing: 10px; /* Espacio entre iconos */
+            --social-bottom-margin: 75px; /* Margen desde abajo para los iconos */
+            --social-right-margin: 15px; /* Margen desde la derecha para los iconos */
         }
 
         /* ----------------------------------- */
@@ -54,18 +76,18 @@
         }
 
         /* ----------------------------------- */
-        /* ESTILOS DE LA PÁGINA WEB REAL (DENTRO DEL MARCO) */
+        /* ESTILOS DE LA PÁGINA WEB REAL (PANTALLA) */
         /* ----------------------------------- */
         .pagina-contenido {
             width: 100%;
             height: 100%;
             overflow-y: scroll;
             background-color: #E6E6FA; /* VIOLETA CLARITO (Fondo General) */
-            padding-top: var(--menu-height); /* IMPORTANTE: Empuja el contenido hacia abajo del menú fijo */
+            padding-top: var(--menu-height); 
             box-sizing: border-box;
         }
 
-        /* --- Estilos del Menú --- */
+        /* --- Estilos del Menú (Header) --- */
         .menu-estatico {
             position: fixed;
             top: 0;
@@ -75,7 +97,7 @@
             color: #333;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            height: var(--menu-height); /* Fija la altura del menú */
+            height: var(--menu-height); 
         }
 
         .menu-estatico nav {
@@ -125,19 +147,16 @@
         main section {
             padding: 20px;
             margin: 0;
-            /* Agregamos padding-top a las secciones para evitar que el menú las cubra */
             padding-top: 20px; 
         }
         
-        /* 1. SECCIÓN AMARILLA CLARITA */
         #inicio {
             background-color: #FFFFE0; /* Amarillo Clarito */
         }
         
-        /* 2. SECCIÓN ROJITA DESTELLANDO */
         #galeria-musica {
             background-color: #FFCCCC; /* Rojito Clarito */
-            animation: destello-sutil 2s infinite alternate;
+            animation: destello-sutil 2s infinite alternate; 
             display: none;
         }
         
@@ -152,21 +171,16 @@
             }
         }
         
-        /* 3. SECCIÓN GRIS */
         #galeria-imagenes {
             background-color: #CCCCCC; /* Gris */
             display: none;
         }
         
-        /* Las galerías deben tener la clase 'oculta' para ser controladas por JS */
         .oculta {
             display: none !important; 
         }
 
-        /* ----------------------------------- */
-        /* Estilos de Contenido (Internos a las Galerías) */
-        /* ----------------------------------- */
-
+        /* Estilos de Contenido Interno */
         .item-galeria {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 15px;
@@ -193,28 +207,45 @@
         }
 
         /* ----------------------------------- */
-        /* Icono de WhatsApp Fijo */
+        /* Iconos de Redes Sociales Flotantes */
         /* ----------------------------------- */
-        .whatsapp-flotante {
+        .redes-sociales-flotantes {
             position: fixed;
-            bottom: 75px; 
-            right: 15px;
-            background-color: #25D366; 
+            bottom: var(--social-bottom-margin);
+            right: var(--social-right-margin);
+            display: flex; /* Para que los iconos se alineen horizontalmente */
+            flex-direction: column; /* Cambia a columna para apilar verticalmente */
+            gap: var(--social-spacing); /* Espacio entre los iconos */
+            z-index: 1000;
+        }
+
+        .redes-sociales-flotantes a {
             color: white;
-            width: 50px;
-            height: 50px;
+            width: var(--social-icon-size);
+            height: var(--social-icon-size);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
+            font-size: calc(var(--social-icon-size) * 0.5); /* Tamaño del icono dentro del círculo */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-            z-index: 1000;
             transition: transform 0.3s;
+            text-decoration: none; /* Quitar el subrayado */
         }
 
-        .whatsapp-flotante:hover {
+        .redes-sociales-flotantes a:hover {
             transform: scale(1.1);
+        }
+        
+        /* Colores específicos para cada red social */
+        .redes-sociales-flotantes .whatsapp {
+            background-color: #25D366; 
+        }
+        .redes-sociales-flotantes .facebook {
+            background-color: #1877F2; 
+        }
+        .redes-sociales-flotantes .instagram {
+            background-color: #C13584; /* O un gradiente: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); */
         }
 
     </style>
@@ -249,7 +280,7 @@
                         <audio controls src="ruta/a/tu/audio.mp3">Tu navegador no soporta el elemento de audio.</audio>
                     </div>
                     <div class="item-galeria">
-                        <h4>Audio Incrustado (SoundCloud)</h4>
+                        <h4>Audio Incrustado (SoundCloud/YouTube)</h4>
                         <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/EJEMPLO&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
                     </div>
                 </section>
@@ -268,9 +299,17 @@
                 </section>
             </main>
 
-            <a href="https://wa.me/573001234567" target="_blank" class="whatsapp-flotante">
-                <i class="fab fa-whatsapp"></i>
-            </a>
+            <div class="redes-sociales-flotantes">
+                <a href="https://wa.me/573001234567" target="_blank" class="whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://www.facebook.com/TuPaginaDeFacebook" target="_blank" class="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com/TuCuentaDeInstagram" target="_blank" class="instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
 
         </div>
     </div>
@@ -282,7 +321,7 @@
             const galeriaMusica = document.getElementById('galeria-musica');
             const galeriaImagenes = document.getElementById('galeria-imagenes');
             const paginaContenido = document.querySelector('.pagina-contenido');
-            const menuHeight = 60; // Altura del menú en píxeles
+            const menuHeight = 60; // Altura fija del menú
 
             // Función para ocultar todas las galerías
             function ocultarTodasLasGalerias() {
@@ -292,10 +331,7 @@
 
             // Función para hacer scroll justo debajo del menú fijo
             function scrollToSection(section) {
-                // Calcula la posición de scroll: posición de la sección menos la altura del menú
                 const scrollPosition = section.offsetTop - menuHeight;
-                
-                // Hace el scroll en el contenedor principal (la "pantalla" del iPhone)
                 paginaContenido.scrollTo({
                     top: scrollPosition,
                     behavior: 'smooth'
@@ -306,7 +342,6 @@
             btnMusica.addEventListener('click', function() {
                 ocultarTodasLasGalerias();
                 galeriaMusica.classList.remove('oculta');
-                // Llama a la función de scroll mejorada
                 scrollToSection(galeriaMusica);
             });
 
@@ -314,11 +349,10 @@
             btnImagenes.addEventListener('click', function() {
                 ocultarTodasLasGalerias();
                 galeriaImagenes.classList.remove('oculta');
-                // Llama a la función de scroll mejorada
                 scrollToSection(galeriaImagenes);
             });
             
-             // Evento para el botón de Inicio (simplemente va al top de la página)
+             // Evento para el botón de Inicio
             document.querySelector('.opciones-menu a[href="#inicio"]').addEventListener('click', function(e) {
                 e.preventDefault();
                 ocultarTodasLasGalerias();
@@ -331,4 +365,3 @@
     </script>
 </body>
 </html>
-
