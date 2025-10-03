@@ -60,7 +60,7 @@
         }
 
         /* Contenedor del reproductor */
-        .video-container {
+        .reproductor-container {
             width: 100%;
             max-width: 600px;
             margin: 20px auto;
@@ -88,6 +88,11 @@
             font-size: 1.5rem;
             cursor: pointer;
             margin: 0 10px;
+        }
+        
+        /* Botones de navegación de la playlist */
+        #prev-btn, #next-btn {
+            font-size: 1rem;
         }
 
         .progress-bar {
@@ -126,7 +131,32 @@
             background: #e74c3c;
             border-radius: 50%;
         }
-        
+
+        /* Estilos de la lista de reproducción */
+        .playlist {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        .playlist-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .playlist-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .playlist-item.active {
+            background-color: #d3d3d3;
+            font-weight: bold;
+        }
+
         /* Botón flotante de WhatsApp */
         .whatsapp-flotante {
             position: fixed;
@@ -180,20 +210,24 @@
         <!-- Sección del Reproductor -->
         <section id="reproductor" class="seccion">
             <h2>Reproductor Multimedia</h2>
-            <div class="video-container">
+            <div class="reproductor-container">
                 <video id="video-player" class="video-main">
-                    <!-- Reemplaza "tu-video.mp4" con la ruta de tu video -->
-                    <source src="tu-video.mp4" type="video/mp4">
-                    Tu navegador no soporta el elemento de video.
+                    <!-- El video inicial se cargará desde JavaScript -->
                 </video>
 
                 <div class="controls">
+                    <button id="prev-btn" class="control-btn">⏮️</button>
                     <button id="play-pause-btn" class="control-btn">►</button>
+                    <button id="next-btn" class="control-btn">⏭️</button>
                     <input type="range" id="progress-bar" value="0" min="0" max="100" class="progress-bar">
                     <button id="mute-btn" class="control-btn">🔊</button>
                     <input type="range" id="volume-slider" value="100" min="0" max="100" class="volume-slider">
                 </div>
             </div>
+            
+            <ul id="playlist" class="playlist">
+                <!-- La lista de canciones se generará con JavaScript -->
+            </ul>
         </section>
     </div>
 
@@ -207,30 +241,102 @@
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('video-player');
             const playPauseBtn = document.getElementById('play-pause-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
             const progressBar = document.getElementById('progress-bar');
             const muteBtn = document.getElementById('mute-btn');
             const volumeSlider = document.getElementById('volume-slider');
+            const playlistElement = document.getElementById('playlist');
 
-            playPauseBtn.addEventListener('click', () => {
-                if (video.paused) {
-                    video.play();
-                    playPauseBtn.innerHTML = '❚❚';
-                } else {
-                    video.pause();
-                    playPauseBtn.innerHTML = '►';
+            const tracks = [
+                { name: "Video 1 - Demo", src: "tu-video-1.mp4" },
+                { name: "Video 2 - Ejemplo", src: "tu-video-2.mp4" },
+                { name: "Video 3 - Canción", src: "tu-video-3.mp4" }
+            ];
+
+            let currentTrackIndex = 0;
+
+            function loadTrack(index) {
+                video.src = tracks[index].src;
+                video.load();
+                updatePlaylistHighlight(index);
+            }
+
+            function playTrack() {
+                video.play();
+                playPauseBtn.innerHTML = '❚❚';
+            }
+
+            function pauseTrack() {
+                video.pause();
+                playPauseBtn.innerHTML = '►';
+            }
+
+            function updatePlaylistHighlight(index) {
+                const items = playlistElement.getElementsByClassName('playlist-item');
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.remove('active');
                 }
+                if (items[index]) {
+                    items[index].classList.add('active');
+                }
+            }
+
+            // Generar la lista de reproducción en el HTML
+            tracks.forEach((track, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = track.name;
+                listItem.classList.add('playlist-item');
+                listItem.addEventListener('click', () => {
+                    currentTrackIndex = index;
+                    loadTrack(currentTrackIndex);
+                    playTrack();
+                });
+                playlistElement.appendChild(listItem);
             });
 
+            // Control de reproducción/pausa
+            playPauseBtn.addEventListener('click', () => {
+                if (video.paused) {
+                    playTrack();
+                } else {
+                    pauseTrack();
+                }
+            });
+            
+            // Botones de siguiente y anterior
+            prevBtn.addEventListener('click', () => {
+                currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+                loadTrack(currentTrackIndex);
+                playTrack();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                loadTrack(currentTrackIndex);
+                playTrack();
+            });
+            
+            // Reproducir automáticamente el siguiente video al terminar
+            video.addEventListener('ended', () => {
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                loadTrack(currentTrackIndex);
+                playTrack();
+            });
+
+            // Actualizar la barra de progreso
             video.addEventListener('timeupdate', () => {
                 const value = (video.currentTime / video.duration) * 100;
                 progressBar.value = value;
             });
 
+            // Controlar el avance con la barra de progreso
             progressBar.addEventListener('input', () => {
                 const time = (progressBar.value / 100) * video.duration;
                 video.currentTime = time;
             });
 
+            // Control de volumen
             volumeSlider.addEventListener('input', () => {
                 video.volume = volumeSlider.value / 100;
                 if (video.volume === 0) {
@@ -240,6 +346,7 @@
                 }
             });
 
+            // Silenciar
             muteBtn.addEventListener('click', () => {
                 video.muted = !video.muted;
                 if (video.muted) {
@@ -251,10 +358,11 @@
                 }
             });
 
+            // Cargar el primer video y ocultar controles nativos
+            loadTrack(currentTrackIndex);
             video.removeAttribute('controls');
         });
     </script>
 
 </body>
 </html>
-
